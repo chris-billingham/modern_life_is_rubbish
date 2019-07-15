@@ -37,4 +37,25 @@ tokens %>%
        x = NULL,
        title = "What are the most 'wordy' Blur album tracks")
 
+# super interesting, i forgot blur like do the odd instrumental/near-instrumental
+# let me remove those to get a better view of actual lyrics. 
+# i'm pretty sure the debt collector is just them counting it in, let me check
+albums %>% filter(track_title == "The Debt Collector")
+
+# yeah so let's exclude anything with less lyrics that the debt collector
+# just to get  a bit of purer view
+tokens %>%
+  mutate(album = as_factor(album),
+         track_title = as_factor(track_title)) %>%
+  group_by(album, track_title) %>%
+  summarise(n = n()) %>%
+  ungroup() %>%
+  filter(n > 11) %>%
+  group_by(album) %>%
+  summarise(mean_tokens = mean(n)) %>%
+  ungroup()
+
+# yeah that brings up Modern Life and Parklife. So it seems that after the relatively simple
+# leisure Damon ramped it right up for the so-called "Life" trilogy
+
 
